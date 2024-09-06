@@ -1,0 +1,38 @@
+/* Styling for the article topic section */
+#article_topic {
+    font-weight: bold;
+    color: blue;
+    text-align: center;
+}
+
+/* Styling for the author section */
+#author {
+    color: #777;
+    font-style: italic;
+}
+
+/* Styling for the topic section */
+#topic {
+    text-decoration: underline;
+    color :red;
+}
+
+#table{
+    flex-wrap: wrap;
+    object-fit: contain;
+    height: 500px;
+    align-items: center;
+}
+.pets {
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    flex-wrap: wrap;
+}
+
+.pets img {
+    height: 500px;    
+    object-fit:contain; 
+    margin: 10px;
+    margin-top: 0px; 
+}
