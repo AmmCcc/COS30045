@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="description"	content="Data Visualisation Exercise 1"/>
+	<meta name="keywords"		  content="HTML, CSS"/>
+	<meta name="author"			  content="Your name here"/>
+	<link href="styles/style.css" rel="stylesheet"></link>
+
+	<title>Task 3.1. Flexible Data Scaling</title>
+    <!-- Load D3.js library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <h1>Flexible Data Scaling</h1>
+
+    <script>
+        // Define the dimensions of the SVG container
+        var w = 700;
+        var h = 300;
+        var padding = 40;
+        
+        // Define the dataset with [Tree Age, Tree Height, Radius]
+        var dataset = [
+            [2,8,2],
+            [3,5,2],
+            [5,17,2],
+            [6,6,2],
+            [6,12,2],
+            [7,20,2],
+            [8,22,2],
+            [10,11,2],
+            [5,12,2],
+            [6,16,2]
+        ];
+
+        // Define the x-scale for Tree Age (years)
+        var xScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset, function(d){
+                            return d[0];
+                        })])  // Set domain from 0 to the maximum Tree Age
+                        .range([padding, w - padding]);  // Map domain values to pixel values
+
+        // Define the y-scale for Tree Height (m)
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset, function(d){
+                            return d[1];
+                        })])  // Set domain from 0 to the maximum Tree Height
+                        .range([h - padding, padding]);  // Map domain values to pixel values
+
+        // Create SVG container
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .attr("fill", "rgb(106,90,205)");
+
+        // Define the x-axis with ticks
+        var xAxis = d3.axisBottom()
+                    .ticks(10)  // Number of ticks on the x-axis
+                    .scale(xScale);  // Apply x-scale
+
+        // Define the y-axis with ticks
+        var yAxis = d3.axisLeft()
+                    .ticks(10)  // Number of ticks on the y-axis
+                    .scale(yScale);  // Apply y-scale
+        
+        // Append x-axis to the SVG container
+        svg.append("g")
+             .attr("transform", "translate(0, " + (h - padding) + ")")
+             .call(xAxis);  // Call the x-axis
+
+        // Add x-axis label
+        svg.append("text")
+            .attr("x", w / 2)
+            .attr("y", h - 5)
+            .style("text-anchor", "middle")
+            .text("Tree Age (years)");
+
+        // Append y-axis to the SVG container
+        svg.append("g")
+             .attr("transform", "translate(" + padding + ", 0)")
+             .call(yAxis);  // Call the y-axis
+
+        // Add y-axis label
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -h / 2)
+            .attr("y", 15)
+            .style("text-anchor", "middle")
+            .text("Tree Height (m)");
+        
+        // Add circles representing data points
+        svg.selectAll("circle")
+            .data(dataset)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) {
+                return xScale(d[0]);  // X-coordinate based on Tree Age
+            })
+            .attr("cy", function(d) {
+                return yScale(d[1]);  // Y-coordinate based on Tree Height
+            })
+            .attr("r", function(d) {
+                return d[2] * 2;  // Radius of circles
+            })
+            .attr("fill", "slategrey");  // Color of circles
+        
+        // Add text labels on circles
+        svg.selectAll("text.circle-label")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .attr("class", "circle-label")
+            .text(function(d) {
+                return d[0] + "," + d[1];  // Display Tree Age and Height
+            })
+            .attr("x", function(d) {
+                return xScale(d[0])+10;  // X-coordinate of label (centered on circle)
+            })
+            .attr("y", function(d) {
+                return yScale(d[1]) -7;  // Y-coordinate of label (centered on circle, adjusted slightly)
+            })
+            .attr("font-size", "15px")
+            .attr("text-anchor", "middle")  // Center the text horizontally
+            .attr("fill", "black");  // Color of the text labels
+  
+    </script>
+
+    <br>
+    <!-- Footer section -->
+    <footer style="color:grey">COS30045 Data Visualisation<br>Ye Htet Kyaw</footer>
+</body>
+</html>
